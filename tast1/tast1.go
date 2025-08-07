@@ -15,6 +15,7 @@ func main() {
 	// 是否是回文数
 	fmt.Println(isPalindrome(2))
 
+	// 加一
 	fmt.Println(addOne_1([]int{9, 9, 9}))
 	fmt.Println(addOne_2([]int{9, 9, 9}))
 
