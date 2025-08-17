@@ -7,7 +7,7 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-var connectType string = "sqlx"
+var connectType string = "gorm"
 var db *gorm.DB
 var sqlxDB *sqlx.DB
 var err error
