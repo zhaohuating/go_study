@@ -2,7 +2,10 @@ package controller
 
 import (
 	"net/http"
+	"strconv"
 	"task4/connect"
+	"task4/errors"
+	"task4/pagination"
 	"task4/structs"
 	"time"
 
@@ -12,6 +15,7 @@ import (
 )
 
 type User structs.User
+type Post structs.Post
 
 var db = connect.GetDB()
 
@@ -80,6 +84,41 @@ func Login(c *gin.Context) {
 	})
 }
 
+// 新建文章
 func AddPost(c *gin.Context) {
+	var post Post
+	if err := c.ShouldBindJSON(&post); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
+	UserID, _ := c.Get("userID")
+	post.UserID = UserID.(uint)
+
+	if err := db.Create(&post).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create post"})
+	} else {
+		c.JSON(http.StatusOK, gin.H{"message": "Post created successfully"})
+	}
+}
+
+func GetPostList(c *gin.Context) {
+	var post []Post
+	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
+	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
+	var pageParam = pagination.Param{
+		Page:     page,
+		PageSize: pageSize,
+	}
+	UserID, _ := c.Get("userID")
+	tx := db.Model(post).Where("user_id = ?", UserID)
+	paginate, err := pagination.Paginate(tx, pageParam, &post)
+
+	if err != nil {
+		serverErrorCode := http.StatusInternalServerError
+		c.AbortWithError(serverErrorCode, errors.NewError(serverErrorCode, "查询失败", err))
+		return
+	}
+
+	c.JSON(http.StatusOK, paginate)
 }

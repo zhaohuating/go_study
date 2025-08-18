@@ -17,7 +17,7 @@ type Post struct {
 	Title   string `gorm:"not null"`
 	Content string `gorm:"not null"`
 	UserID  uint
-	User    User
+	User    User `json:"-"`
 }
 
 type Comment struct {
