@@ -79,3 +79,7 @@ func Login(c *gin.Context) {
 		},
 	})
 }
+
+func AddPost(c *gin.Context) {
+
+}

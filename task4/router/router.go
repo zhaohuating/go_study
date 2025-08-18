@@ -2,6 +2,7 @@ package router
 
 import (
 	"task4/controller"
+	"task4/middleware"
 
 	"github.com/gin-gonic/gin"
 )
@@ -17,8 +18,9 @@ func SetupRouter() *gin.Engine {
 
 	//需要验证用户的
 	private := router.Group("/api/user")
+	private.Use(middleware.JWTAuthMiddleware())
 	{
-		private.POST("/register", controller.Register)
+		private.POST("/addpost", controller.AddPost)
 	}
 
 	return router
