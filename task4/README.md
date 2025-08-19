@@ -88,3 +88,411 @@
 - 需认证接口（需在请求头携带 JWT Token）
     - 文章管理：`POST /api/post`（创建）、`GET /api/post`（列表）、`GET /api/post/:id`（详情）、`PUT /api/post/:id`（更新）、`DELETE /api/post/:id`（删除）
     - 评论管理：`POST /api/comment`（创建）、`GET /api/comment/:postID`（获取某篇文章的评论列表）
+
+---
+
+---
+
+# API
+
+Base URLs:
+
+# Authentication
+
+# Default
+
+## POST 注册
+
+POST /register
+
+> Body 请求参数
+
+```json
+{
+  "username": "韩梅梅",
+  "password": "123456",
+  "email": "hanmeimei@qq.com"
+}
+```
+
+### 请求参数
+
+| 名称 | 位置 | 类型   | 必选 | 说明 |
+| ---- | ---- | ------ | ---- | ---- |
+| body | body | object | 是   | none |
+
+> 返回示例
+
+> 200 Response
+
+```json
+{
+  "message": "User registered successfully"
+}
+```
+
+### 返回结果
+
+| 状态码 | 状态码含义                                              | 说明 | 数据模型 |
+| ------ | ------------------------------------------------------- | ---- | -------- |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | Inline   |
+
+### 返回数据结构
+
+## POST 登录
+
+POST /login
+
+> Body 请求参数
+
+```json
+{
+  "username": "韩梅梅",
+  "password": "123456"
+}
+```
+
+### 请求参数
+
+| 名称 | 位置 | 类型   | 必选 | 说明 |
+| ---- | ---- | ------ | ---- | ---- |
+| body | body | object | 是   | none |
+
+> 返回示例
+
+> 200 Response
+
+```json
+{
+  "message": "Login successful",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTU2MTEyMDIsImlkIjoyLCJ1c2VybmFtZSI6IumfqeaiheaihSJ9.AnGPujal8GqnqoDL-6EhDfbioR60H8JOZXYn1eLdMXc",
+  "user": {
+    "id": 2,
+    "username": "韩梅梅"
+  }
+}
+```
+
+### 返回结果
+
+| 状态码 | 状态码含义                                              | 说明 | 数据模型 |
+| ------ | ------------------------------------------------------- | ---- | -------- |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | Inline   |
+
+### 返回数据结构
+
+## POST 添加文章
+
+POST /user/addpost
+
+> Body 请求参数
+
+```json
+{
+  "title": "这是韩梅梅的第一篇博客",
+  "content": "第一次写博客真的好开心，希望大家能喜欢"
+}
+```
+
+### 请求参数
+
+| 名称          | 位置   | 类型   | 必选 | 说明 |
+| ------------- | ------ | ------ | ---- | ---- |
+| Authorization | header | string | 是   | none |
+| body          | body   | object | 是   | none |
+
+> 返回示例
+
+> 200 Response
+
+```json
+{
+  "message": "Post created successfully"
+}
+```
+
+### 返回结果
+
+| 状态码 | 状态码含义                                              | 说明 | 数据模型 |
+| ------ | ------------------------------------------------------- | ---- | -------- |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | Inline   |
+
+### 返回数据结构
+
+## GET 获取文章列表带分页
+
+GET /post
+
+### 请求参数
+
+| 名称          | 位置   | 类型    | 必选 | 说明 |
+| ------------- | ------ | ------- | ---- | ---- |
+| page          | query  | integer | 是   | none |
+| pageSize      | query  | integer | 是   | none |
+| Authorization | header | string  | 是   | none |
+
+> 返回示例
+
+```json
+{
+  "page": 1,
+  "pageSize": 10,
+  "total": 1,
+  "totalPage": 1,
+  "items": [
+    {
+      "ID": 1,
+      "CreatedAt": "2025-08-18T09:54:27.024+08:00",
+      "UpdatedAt": "2025-08-18T09:54:27.024+08:00",
+      "DeletedAt": null,
+      "Title": "这是韩梅梅的第一篇博客",
+      "Content": "第一次写博客真的号开心，希望大家能喜欢",
+      "UserID": 2
+    }
+  ]
+}
+```
+
+```json
+{
+  "code": 500,
+  "message": "查询失败"
+}
+```
+
+```json
+{
+  "page": 1,
+  "pageSize": 10,
+  "total": 1,
+  "totalPage": 1,
+  "items": [
+    {
+      "ID": 2,
+      "CreatedAt": "2025-08-18T17:19:28.175+08:00",
+      "UpdatedAt": "2025-08-18T17:19:28.175+08:00",
+      "DeletedAt": null,
+      "Title": "这是韩梅梅的第一篇博客",
+      "Content": "",
+      "UserID": 0
+    }
+  ]
+}
+```
+
+### 返回结果
+
+| 状态码 | 状态码含义                                              | 说明 | 数据模型 |
+| ------ | ------------------------------------------------------- | ---- | -------- |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | Inline   |
+
+### 返回数据结构
+
+## PUT 更新博客
+
+PUT /post/1
+
+/post/{postid}.
+
+postid：文章ID
+
+> Body 请求参数
+
+```json
+{
+  "title": "这是韩梅梅的第一篇博客",
+  "content": "第一次写博客真的好开心，希望大家能喜欢，感谢大家"
+}
+```
+
+### 请求参数
+
+| 名称          | 位置   | 类型   | 必选 | 说明 |
+| ------------- | ------ | ------ | ---- | ---- |
+| Authorization | header | string | 是   | none |
+| body          | body   | object | 是   | none |
+
+> 返回示例
+
+> 200 Response
+
+```json
+{
+  "message": "Post updated successfully"
+}
+```
+
+### 返回结果
+
+| 状态码 | 状态码含义                                              | 说明 | 数据模型 |
+| ------ | ------------------------------------------------------- | ---- | -------- |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | Inline   |
+
+### 返回数据结构
+
+## DELETE 删除博客
+
+DELETE /post/1
+
+/post/{postid}
+
+postid：文章ID
+
+### 请求参数
+
+| 名称          | 位置   | 类型   | 必选 | 说明 |
+| ------------- | ------ | ------ | ---- | ---- |
+| Authorization | header | string | 是   | none |
+
+> 返回示例
+
+> 200 Response
+
+```json
+{
+  "message": "Post deleted successfully"
+}
+```
+
+### 返回结果
+
+| 状态码 | 状态码含义                                              | 说明 | 数据模型 |
+| ------ | ------------------------------------------------------- | ---- | -------- |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | Inline   |
+
+### 返回数据结构
+
+状态码 **200**
+
+| 名称      | 类型   | 必选 | 约束 | 中文名 | 说明 |
+| --------- | ------ | ---- | ---- | ------ | ---- |
+| » message | string | true | none |        | none |
+
+## POST 新增评论
+
+POST /comment
+
+> Body 请求参数
+
+```json
+{
+  "content": "博主写的太好了，支持博主",
+  "postID": 2
+}
+```
+
+### 请求参数
+
+| 名称          | 位置   | 类型   | 必选 | 说明 |
+| ------------- | ------ | ------ | ---- | ---- |
+| Authorization | header | string | 是   | none |
+| body          | body   | object | 是   | none |
+
+> 返回示例
+
+> 200 Response
+
+```json
+{
+  "message": "Comment created successfully"
+}
+```
+
+### 返回结果
+
+| 状态码 | 状态码含义                                              | 说明 | 数据模型 |
+| ------ | ------------------------------------------------------- | ---- | -------- |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | Inline   |
+
+### 返回数据结构
+
+## GET 获取文章的评论
+
+GET /comment/2
+
+### 请求参数
+
+| 名称          | 位置   | 类型    | 必选 | 说明     |
+| ------------- | ------ | ------- | ---- | -------- |
+| page          | query  | integer | 是   | 页数     |
+| pageSize      | query  | integer | 是   | 每页条数 |
+| Authorization | header | string  | 是   | none     |
+
+> 返回示例
+
+> 200 Response
+
+```json
+{
+  "page": 1,
+  "pageSize": 20,
+  "total": 2,
+  "totalPage": 1,
+  "items": [
+    {
+      "ID": 1,
+      "CreatedAt": "2025-08-18T17:20:10.816+08:00",
+      "UpdatedAt": "2025-08-18T17:20:10.816+08:00",
+      "DeletedAt": null,
+      "Content": "博主写的太好了，支持博主",
+      "UserID": 2,
+      "PostID": 2
+    },
+    {
+      "ID": 2,
+      "CreatedAt": "2025-08-18T18:12:03+08:00",
+      "UpdatedAt": "2025-08-18T18:12:16+08:00",
+      "DeletedAt": null,
+      "Content": "支持博主",
+      "UserID": 1,
+      "PostID": 2
+    }
+  ]
+}
+```
+
+### 返回结果
+
+| 状态码 | 状态码含义                                              | 说明 | 数据模型 |
+| ------ | ------------------------------------------------------- | ---- | -------- |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | Inline   |
+
+### 返回数据结构
+
+## GET 获取文章详细信息
+
+GET /post/2
+
+/post/{postid}
+
+postid：文章ID
+
+### 请求参数
+
+| 名称          | 位置   | 类型   | 必选 | 说明 |
+| ------------- | ------ | ------ | ---- | ---- |
+| Authorization | header | string | 是   | none |
+
+> 返回示例
+
+> 200 Response
+
+```json
+{
+  "ID": 2,
+  "CreatedAt": "2025-08-18T17:19:28.175+08:00",
+  "UpdatedAt": "2025-08-18T17:19:28.175+08:00",
+  "DeletedAt": null,
+  "Title": "这是韩梅梅的第一篇博客",
+  "Content": "第一次写博客真的好开心，希望大家能喜欢",
+  "UserID": 2
+}
+```
+
+### 返回结果
+
+| 状态码 | 状态码含义                                              | 说明 | 数据模型 |
+| ------ | ------------------------------------------------------- | ---- | -------- |
+| 200    | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | Inline   |
+
+### 
