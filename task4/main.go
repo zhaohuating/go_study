@@ -1,6 +1,7 @@
 package main
 
 import (
+	"strconv"
 	"task4/config"
 	"task4/router"
 	"task4/structs"
@@ -13,6 +14,6 @@ func main() {
 	//db := connect.GetDB()
 	//db.AutoMigrate(&structs.Comment{}, &structs.User{}, &structs.Post{})
 	engine := router.SetupRouter()
-	engine.Run(config.Cfg.Server.Port)
+	engine.Run(":" + strconv.Itoa(config.Cfg.Server.Port))
 
 }

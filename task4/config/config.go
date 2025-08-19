@@ -19,7 +19,7 @@ type Config struct {
 
 // 服务器配置
 type ServerConfig struct {
-	Port string `yaml:"port"`
+	Port int `yaml:"port"`
 }
 
 // 数据库配置
