@@ -33,8 +33,23 @@ func init() {
 		dialector = mysql.Open(dsn)
 	}
 
+	levelMap := map[string]logger.LogLevel{
+		"silent": logger.Silent,
+		"error":  logger.Error,
+		"warn":   logger.Warn,
+		"info":   logger.Info,
+		"debug":  logger.Info, // debug 映射到 info（输出详细日志）
+	}
+
+	level := config.Cfg.Log.Level
+	logLevel, ok := levelMap[level]
+
+	if !ok {
+		logLevel = logger.Info
+	}
+
 	db, err = gorm.Open(dialector, &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Info),
+		Logger: logger.Default.LogMode(logLevel),
 	})
 
 	if err != nil {
