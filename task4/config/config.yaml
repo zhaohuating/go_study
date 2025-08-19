@@ -1,0 +1,24 @@
+# 服务器配置
+server:
+  port: ":8082"
+  mode: "debug"  # debug/release
+
+# 数据库配置
+database:
+  driver: "mysql"
+  dsn: "root:123456@tcp(127.0.0.1:3306)/blog?charset=utf8mb4&parseTime=True&loc=Local"
+  max_open_conns: 100
+  max_idle_conns: 20
+  conn_max_lifetime: 3600  # 连接最大存活时间(秒)
+
+# JWT配置
+jwt:
+  secret: "myjwt@secretkey_"
+  expire_hours: 24  # 过期时间(小时)
+
+# 日志配置
+log:
+  level: "info"
+  mode : "dev"
+  encoding : "json"
+  output_path: "./logs/logs-"

@@ -24,9 +24,9 @@ type Comment struct {
 	gorm.Model
 	Content string `gorm:"not null"`
 	UserID  uint
-	User    User
+	User    User `json:"-"`
 	PostID  uint
-	Post    Post
+	Post    Post `json:"-"`
 }
 
 func main() {

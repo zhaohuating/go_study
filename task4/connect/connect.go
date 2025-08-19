@@ -1,33 +1,56 @@
 package connect
 
 import (
-	"github.com/jmoiron/sqlx"
+	"task4/config"
+	"time"
+
 	"gorm.io/driver/mysql"
+	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
 
-var connectType string = "gorm"
+const (
+	MYSQL  = "mysql"
+	SQLITE = "sqlite"
+)
+
 var db *gorm.DB
-var sqlxDB *sqlx.DB
 var err error
 
 func init() {
-	if connectType == "gorm" {
-		db, err = gorm.Open(mysql.Open("root:123456@tcp(127.0.0.1:3306)/blog?charset=utf8mb4&parseTime=True&loc=Local"), &gorm.Config{
-			Logger: logger.Default.LogMode(logger.Info),
-		})
-	} else if connectType == "sqlx" {
-		sqlxDB, err = sqlx.Open("mysql", "root:123456@tcp(127.0.0.1:3306)/blog?charset=utf8&parseTime=True&loc=Local")
+	var dialector gorm.Dialector
+	var driver string = config.Cfg.Database.Driver
+	var dsn string = config.Cfg.Database.Dsn
+	var maxOpenConns int = config.Cfg.Database.MaxOpenConns
+	var maxIdleConns int = config.Cfg.Database.MaxIdleConns
+	var connMaxLifetime int = config.Cfg.Database.ConnMaxLifetime
+	if driver == MYSQL {
+		dialector = mysql.Open(dsn)
+	} else if driver == SQLITE {
+		dialector = sqlite.Open(dsn)
+	} else {
+		dialector = mysql.Open(dsn)
 	}
+
+	db, err = gorm.Open(dialector, &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info),
+	})
 
 	if err != nil {
 		panic("连接数据库失败")
 	}
-}
 
-func GetSqlxDB() *sqlx.DB {
-	return sqlxDB
+	sqlDB, _ := db.DB()
+	// 配置连接池参数
+	// 1. 最大打开连接数（默认值为0，表示无限制）
+	sqlDB.SetMaxOpenConns(maxOpenConns) // 根据服务器性能和数据库承载能力调整
+
+	// 2. 最大空闲连接数（默认值为2）
+	sqlDB.SetMaxIdleConns(maxIdleConns) // 建议设置为与 MaxOpenConns 接近，避免频繁创建连接
+
+	// 3. 连接的最大存活时间（超过此时间的空闲连接会被关闭）
+	sqlDB.SetConnMaxLifetime(time.Duration(connMaxLifetime) * time.Second) //
 }
 
 func GetDB() *gorm.DB {
