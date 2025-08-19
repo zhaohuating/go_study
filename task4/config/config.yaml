@@ -1,7 +1,6 @@
 # 服务器配置
 server:
   port: ":8082"
-  mode: "debug"  # debug/release
 
 # 数据库配置
 database:
@@ -18,7 +17,6 @@ jwt:
 
 # 日志配置
 log:
-  level: "info"
-  mode : "dev"
-  encoding : "json"
+  level: "debug" # panic fatal error warn/warning info debug trace
+  max_age: 7  # 日志保存时间 （天）
   output_path: "./logs/logs-"

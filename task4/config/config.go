@@ -20,7 +20,6 @@ type Config struct {
 // 服务器配置
 type ServerConfig struct {
 	Port string `yaml:"port"`
-	Mode string `yaml:"mode"`
 }
 
 // 数据库配置
@@ -41,9 +40,8 @@ type JWTConfig struct {
 // 日志配置
 type LogConfig struct {
 	Level      string `yaml:"level"`
-	Encoding   string `yaml:"encoding"`
-	Mode       string `yaml:"mode"`
 	OutputPath string `yaml:"output_path"` // 日志路径
+	MaxAge     uint   `yaml:"max_age"`
 }
 
 // 初始化配置

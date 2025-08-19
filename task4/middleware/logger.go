@@ -15,11 +15,23 @@ import (
 
 func Logger() gin.HandlerFunc {
 	filePath := config.Cfg.Log.OutputPath
+	logLevel := config.Cfg.Log.Level
 	logger := logrus.New()
-	logger.SetLevel(logrus.DebugLevel)
+	level, err := logrus.ParseLevel(logLevel)
+	if err != nil {
+		fmt.Printf("parse log level error, The default level has been set to: info。%s\n", err.Error())
+		level = logrus.InfoLevel
+	}
+	logger.SetLevel(level)
+	age := config.Cfg.Log.MaxAge
+	if age <= 0 {
+		age = 1
+	}
+	maxAge := age * 24
+	maxAgeHour := time.Duration(maxAge) * time.Hour
 	logWriter, _ := rotatelog.New(
 		filePath+"%Y-%m-%d.log",
-		rotatelog.WithMaxAge(7*24*time.Hour),
+		rotatelog.WithMaxAge(maxAgeHour),
 		rotatelog.WithRotationTime(24*time.Hour),
 		rotatelog.WithLinkName("latest_log.log"),
 	)
