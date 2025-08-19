@@ -34,7 +34,7 @@
 1. **服务器配置**
    ```yaml
    server:
-     port: ":8082"  # 服务监听端口
+     port: 8082  # 服务监听端口
    ```
 
 2. **数据库配置**
@@ -53,7 +53,7 @@
      secret: "myjwt@secretkey_"  # JWT 签名密钥
      expire_hours: 24  # 过期时间(小时)
    ```
-4**日志 配置**
+4. **日志 配置**
    ```yaml
    log:
      level: "debug" # panic fatal error warn/warning info debug trace
