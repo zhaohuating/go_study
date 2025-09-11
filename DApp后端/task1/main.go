@@ -19,7 +19,7 @@ import (
 )
 
 const (
-	PRIVATEKEY   = "25d706fa02cdc95521bec870582c8b95e0e400784a6f948471044273ce31ef62"
+	PRIVATEKEY   = "your_private_key_here"
 	RAWURL       = "https://ethereum-sepolia-rpc.publicnode.com"
 	WSSRAWURL    = "wss://ethereum-sepolia-rpc.publicnode.com"
 	contractAddr = "0x65Aeb47eb7Eb153306BA87398544437D5560b162"
