@@ -26,12 +26,12 @@ const (
 )
 
 func main() {
-	//BlockInfo(0)
-	//TestTransferERC20()
-	// SubscribeNewHead()
-	//DeployContract()
-	//LoadContract()
-	ExeContract()
+	//BlockInfo(0) // 区块信息
+	//TestTransferERC20() // 转账ERC20代币
+	// SubscribeNewHead()	// 订阅新区块
+	//DeployContract() // 部署合约
+	//LoadContract()	// 加载合约
+	ExeContract() // 执行合约
 
 }
 
